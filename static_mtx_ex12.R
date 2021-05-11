@@ -6,8 +6,10 @@ dt <- cmm.dt_compute.fn(sc.dt.fraction, sc.mttr_c)
 u_c <- 1/sc.mttr_c
 u_p <- 1/sc.mttr_p
 
+plot_title <- "Ex.12 Availability & Reliability"
 cvg_idx <- 1
 states.arr <- c("Op", "Covered", "Not covered", "Failure")
+plot_file <- 'plots/ex12_simulation.pdf'
 
 transition_availability.list = vector('list', length(sc.coverage))
 transition_reliability.list = vector('list', length(sc.coverage))

@@ -3,14 +3,17 @@ if (!require("markovchain")) install.packages("markovchain")
 if (!require("diagram")) install.packages("diagram")
 library(markovchain, diagram)
 
-source("static_mtx_ex12.R")
-
+# source("static_mtx_ex12.R")
+# source("static_mtx_ex13.R")
+# source("static_mtx_ex14.R")
+source("static_mtx_ex15.R")
 
 SCALE <- 1000
 
+pdf(plot_file)
 
 plot(c(0:1), c(0:1), ylim=c(0,1), xlim = c(0,100), type = "n",
-    main = "Ex. 12 Availability & Reliability",
+    main = plot_title,
     xlab = "Time (h) 1:1000 scale", ylab = "Probability")
 
 
@@ -50,3 +53,5 @@ for(idx in c(1:2)){
     cvg_idx <- cvg_idx + 1
   }
 }
+
+dev.off()
