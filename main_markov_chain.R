@@ -1,4 +1,8 @@
-source("static_mtx_ex12.R")
+source('static_mtx_ex15.R')
+#source('static_mtx_ex14.R')
+#source('static_mtx_ex13.R')
+#source('static_mtx_ex12.R')
+#source("static_mtx_ex12.R")
 # source("static_mtx_ex13.R")
 # source("static_mtx_ex14.R")
 # source("static_mtx_ex15.R")
@@ -10,8 +14,10 @@ if (!require("Bolstad2")) install.packages("Bolstad2")
 if (!require("ggplot2")) install.packages("ggplot2")
 if (!require("cowplot")) install.packages("cowplot")
 
-#const SCALE --> plot scale
 SCALE <- 1000
+PLOT_BASE_SIZE <- 26
+PLOT_DEFAULT_LINE_SIZE <- 2
+PLOT_TINY_LINE_SIZE <- 0.6
 ############################################################################
 #data.frame columns
 full_N.arr <- c()
@@ -93,8 +99,10 @@ reliability_plot <- ggplot(reliability.df) +
       y = Probability,
       group = Coverage,
       colour = Coverage
-    ))  +
-    geom_vline(mapping = aes(
+    ),
+    size = PLOT_DEFAULT_LINE_SIZE
+  )  +
+  geom_vline(mapping = aes(
       xintercept = MTTF/SCALE,
       group = Coverage,
       linetype = paste(paste("C:", Coverage),paste("MTTF:", round(MTTF/SCALE,2)))
@@ -102,13 +110,14 @@ reliability_plot <- ggplot(reliability.df) +
     data = rel_mttf.df,
     show.legend=TRUE,
     color = "red",
-    size = 0.2
+    size = PLOT_TINY_LINE_SIZE
   ) +
   scale_linetype_manual(name="MTTF", values = c(1:5)) +
   xlab(paste("Time (h). Scale 1:",SCALE)) +
   ylab("Reliability") +
   ggtitle(plot_title) +
   theme_minimal() +
+  theme_bw(base_size=PLOT_BASE_SIZE) +
   ylim(0,1)
 
 availability_plot <- ggplot(availability.df) +
@@ -116,8 +125,10 @@ availability_plot <- ggplot(availability.df) +
       y = Probability,
       group = Coverage,
       colour = Coverage
-    )) +
-    geom_hline(mapping = aes(
+    ),
+    size = PLOT_DEFAULT_LINE_SIZE
+  ) +
+  geom_hline(mapping = aes(
       yintercept = Availability,
       group = Coverage,
       linetype = paste(paste("C:", Coverage),paste("A:", round(Availability,2)))
@@ -125,15 +136,16 @@ availability_plot <- ggplot(availability.df) +
     data = avai_asymptotic.df,
     show.legend=TRUE,
     color = "red",
-    size = 0.2
+    size = PLOT_TINY_LINE_SIZE
   ) +
   scale_linetype_manual(name="Asymptotic Availability", values = c(1:5)) +
   xlab(paste("Time (h). Scale 1:",SCALE)) +
   ylab("Availability") +
   ggtitle(plot_title) +
   theme_minimal() +
+  theme_bw(base_size=PLOT_BASE_SIZE) +
   ylim(0,1)
 
 rel_avai.plots <- plot_grid(reliability_plot, availability_plot, labels = "AUTO")
 file_device <- paste(plot_file, "png", sep=".")
-ggsave(filename=plot_file, plot=rel_avai.plots, device="png")
+ggsave(filename=file_device, plot=rel_avai.plots, device="png", width=31.25, height = 21.875, dpi = 400)

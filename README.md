@@ -11,4 +11,9 @@ Example:
   - The Asymptotic behavior is from Availability lines. The other lines are from Reliability.
 
 
-![plot](example_ex12_simulation.png)
+Run "run_all.sh" script, as follows, to plot all the data from exercises 12 to 15:
+$ ./scripts/run_all.sh
+
+Plot Example:
+
+![plot](plots/ex12_simulation.png)
