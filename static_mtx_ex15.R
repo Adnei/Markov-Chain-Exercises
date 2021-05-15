@@ -9,7 +9,7 @@ u_p <- 1/sc.mttr_p
 plot_title <- "Ex.15 Availability & Reliability"
 cvg_idx <- 1
 states.arr <- c("Op1", "Op2", "OpC", "OpNC", "Failure")
-plot_file <- 'plots/ex15_simulation.pdf'
+plot_file <- 'plots/ex15_simulation'
 
 transition_availability.list = vector('list', length(sc.coverage))
 transition_reliability.list = vector('list', length(sc.coverage))

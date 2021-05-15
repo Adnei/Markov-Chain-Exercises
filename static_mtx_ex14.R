@@ -9,7 +9,7 @@ u_p <- 1/sc.mttr_p
 plot_title <- "Ex.14 Availability & Reliability"
 cvg_idx <- 1
 states.arr <- c("M1M2", "M2M3", "M1M3", "Failure")
-plot_file <- 'plots/ex14_simulation.pdf'
+plot_file <- 'plots/ex14_simulation'
 
 
 
