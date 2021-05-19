@@ -1,8 +1,4 @@
-source('static_mtx_ex15.R')
-#source('static_mtx_ex14.R')
-#source('static_mtx_ex13.R')
-#source('static_mtx_ex12.R')
-#source("static_mtx_ex12.R")
+source("static_mtx_ex12.R")
 # source("static_mtx_ex13.R")
 # source("static_mtx_ex14.R")
 # source("static_mtx_ex15.R")
@@ -13,6 +9,8 @@ if (!require("diagram")) install.packages("diagram")
 if (!require("Bolstad2")) install.packages("Bolstad2")
 if (!require("ggplot2")) install.packages("ggplot2")
 if (!require("cowplot")) install.packages("cowplot")
+
+print("Starting Markov Chain for static matrix")
 
 SCALE <- 1000
 PLOT_BASE_SIZE <- 26
@@ -45,13 +43,18 @@ for(idx in c(1:2)){
     steady_op <- steadyStates(mk_chain)[1]
 
     while(TRUE){
-      nth_op <- (mk_chain^N)[1,1]
-      prob.arr <- c(prob.arr, nth_op)
-
+      nth_mk_chain <- mk_chain^N
+      operational_probability <- 0
+      # The last column of the matrix is the Failure column
+      # Thus, we sum up all the probability of the system going from operational to whatever state but failure
+      for(mtx_column in c(1 : (length(nth_mk_chain[1]) - 1))){
+        operational_probability <- operational_probability + nth_mk_chain[1,mtx_column]
+      }
+      prob.arr <- c(prob.arr, operational_probability)
       if (type == "Availability"){
-        if((nth_op - steady_op) < 10*exp(-25)) break
+        if((nth_mk_chain[1,1] - steady_op) < 10^(-10)) break
       }else{
-        if((nth_op - steady_op) < 10*exp(-8)) break
+        if((nth_mk_chain[1,1] - steady_op) < 10^(-3)) break
       }
 
       N <- N + 1
@@ -93,6 +96,9 @@ rel_mttf.df <- data.frame(MTTF = unique(reliability.df$Measure),
     Coverage = unique(reliability.df$Coverage))
 avai_asymptotic.df <- data.frame(Availability = unique(availability.df$Measure),
     Coverage = unique(availability.df$Coverage))
+
+print("Markov Chain simulation done!")
+print("Plotting reliability and availability curves")
 
 reliability_plot <- ggplot(reliability.df) +
     geom_line(aes(x = Time/SCALE,
@@ -149,3 +155,5 @@ availability_plot <- ggplot(availability.df) +
 rel_avai.plots <- plot_grid(reliability_plot, availability_plot, labels = "AUTO")
 file_device <- paste(plot_file, "png", sep=".")
 ggsave(filename=file_device, plot=rel_avai.plots, device="png", width=31.25, height = 21.875, dpi = 400)
+
+print("Plotting done!")
